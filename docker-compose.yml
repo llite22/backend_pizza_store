@@ -1,0 +1,33 @@
+services:
+  backend:
+    container_name: backend # Задает имя контейнера
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    env_file:
+      - .development.env # Указывает путь к файлу с переменными окружения
+    volumes:
+      - .:/app # Монтирует локальную директорию в контейнер для разработки
+      - /app/node_modules
+    ports:
+      - '3000:3000' # Проброс порта: хост:контейнер
+    command: npm run start:dev
+    depends_on:
+      - postgres # Зависимость от сервиса с PostgreSQL
+    restart: always # Обеспечивает автоматический перезапуск контейнера в случае сбоя или перезагрузки системы
+
+  postgres:
+    container_name: postgres # Задает имя контейнера
+    image: postgres:16 # Использует официальный образ PostgreSQL версии 16
+    env_file:
+      - .development.env # Указывает путь к файлу с переменными окружения
+    environment:
+      PG_DATA: /var/lib/postgresql/data # Указывает путь к директории с данными PostgreSQL
+    ports:
+      - '5433:5432' # Проброс порта: хост:5433, контейнер:5432
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    restart: always
+
+volumes:
+  pgdata:
