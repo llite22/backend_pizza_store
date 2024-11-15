@@ -9,6 +9,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { CategoryEntity } from './category/entities/category.entity';
 import { IngredientEntity } from './ingredient/entities/ingredient.entity';
+import { ProductEntity } from './product/entities/product.entity';
 
 @Module({
   imports: [
@@ -22,7 +23,7 @@ import { IngredientEntity } from './ingredient/entities/ingredient.entity';
       username: process.env.POSTGRES_USER,
       password: process.env.POSTGRES_PASSWORD,
       database: process.env.POSTGRES_DB,
-      entities: [CategoryEntity, IngredientEntity],
+      entities: [CategoryEntity, IngredientEntity, ProductEntity],
       synchronize: !!process.env.SYNCHRONIZE,
     }),
     UserModule,
